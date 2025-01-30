@@ -1,12 +1,12 @@
 # Base image
-FROM python:3.9-slim
+FROM python:3.12.4-slim
 
 # Set working directory
 WORKDIR /app
 
 # Copy necessary files
 COPY requirements.txt .
-COPY app.py .
+COPY app.py .python
 COPY churn_model.joblib .
 
 # Install dependencies
