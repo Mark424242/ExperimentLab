@@ -1,0 +1,36 @@
+name: Deploy Fraud Detection API
+
+on:
+  push:
+    branches:
+      - main  # Trigger CI/CD on push to main branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Log in to DockerHub
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+    - name: Build Docker Image
+      run: |
+        docker build -t fraud-detection-api .
+        docker tag fraud-detection-api:latest ${{ secrets.DOCKER_USERNAME }}/fraud-detection-api:latest
+
+    - name: Push Docker Image to Docker Hub
+      run: |
+        docker push ${{ secrets.DOCKER_USERNAME }}/fraud-detection-api:latest
+
+    - name: Configure kubectl
+      run: |
+        echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > kubeconfig.yaml
+        export KUBECONFIG=kubeconfig.yaml
+
+    - name: Deploy to Kubernetes
+      run: |
+        kubectl apply -f fraud-detection-deployment.yml
+        kubectl apply -f fraud-detection-service.yml
