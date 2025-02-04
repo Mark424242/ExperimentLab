@@ -117,7 +117,7 @@ Create a Docker image so the model API runs consistently anywhere.
 ### **📌 `Dockerfile`**
 ```dockerfile
 # Base Image
-FROM python:3.9-slim
+FROM python:3.12.4-slim
 
 WORKDIR /app
 COPY requirements.txt .
@@ -233,6 +233,20 @@ jobs:
       run: |
         kubectl apply -f fraud-detection-deployment.yml
         kubectl apply -f fraud-detection-service.yml
+
+    {
+  "clientId": "your-client-id",
+  "clientSecret": "your-client-secret",
+  "subscriptionId": "your-subscription-id",
+  "tenantId": "your-tenant-id",
+  "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
+  "resourceManagerEndpointUrl": "https://management.azure.com/",
+  "activeDirectoryGraphResourceId": "https://graph.windows.net/",
+  "sqlManagementEndpointUrl": "https://management.core.windows.net/",
+  "galleryEndpointUrl": "https://gallery.azure.com/",
+  "managementEndpointUrl": "https://management.core.windows.net/"
+}
+
 ```
 
 ---
